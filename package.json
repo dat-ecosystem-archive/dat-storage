@@ -1,0 +1,23 @@
+{
+  "name": "dat-storage",
+  "version": "0.0.0",
+  "description": "Dat specific storage provider for Hyperdrive",
+  "main": "index.js",
+  "dependencies": {
+    "append-tree": "^2.0.5",
+    "hyperdrive": "^8.1.0",
+    "multi-random-access": "^2.0.3",
+    "random-access-file": "^1.5.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mafintosh/dat-storage.git"
+  },
+  "author": "Mathias Buus (@mafintosh)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafintosh/dat-storage/issues"
+  },
+  "homepage": "https://github.com/mafintosh/dat-storage"
+}

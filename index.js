@@ -19,7 +19,7 @@ module.exports = function (dir) {
 }
 
 function createStorage (archive, dir) {
-  var latest = false // DUMMY flag so i can future proof this
+  var latest = archive.metadata.writable || false // DUMMY flag so i can future proof this
   var head = null
   var storage = multi({limit: 64}, locate)
 

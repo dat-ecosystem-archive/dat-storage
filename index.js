@@ -9,20 +9,23 @@ module.exports = function (dir) {
 
   return {
     metadata: function (name) {
-      return raf(path.join(dir, meta, 'metadata', name))
+      if (typeof dir === 'function') return dir('.dat/metadata/' + name)
+      return raf(path.join(dir, '.dat/metadata', name))
     },
     content: function (name, archive) {
       if (name === 'data') return createStorage(archive, dir)
-      return raf(path.join(dir, meta, 'content', name))
+      if (typeof dir === 'function') return dir('.dat/content/' + name)
+      return raf(path.join(dir, '.dat/content', name))
     }
   }
 }
 
 function createStorage (archive, dir) {
-  var latest = false // DUMMY flag so i can future proof this
+  var latest = archive.latest
   var head = null
   var storage = multi({limit: 64}, locate)
 
+  // TODO: this should be split into two events, 'appending' and 'append'
   archive.on('append', onappend)
 
   return storage
@@ -35,7 +38,7 @@ function createStorage (archive, dir) {
     head = {
       start: archive.content.byteLength,
       end: Infinity,
-      storage: raf(path.join(dir, name + v))
+      storage: file(name + v)
     }
 
     storage.add(head)
@@ -54,10 +57,15 @@ function createStorage (archive, dir) {
         cb(null, {
           start: st.byteOffset,
           end: st.byteOffset + st.size,
-          storage: raf(path.join(dir, node.name + v))
+          storage: file(node.name + v)
         })
       })
     })
+  }
+
+  function file (name) {
+    if (typeof dir === 'function') return dir(name)
+    return raf(path.join(dir, name))
   }
 }
 
@@ -71,7 +79,7 @@ function get (metadata, btm, seq, cb) {
 
   metadata.get(i, {valueEncoding: messages.Node}, function (err, node) {
     if (err) return cb(err)
-    if (!node.value) return get(btm, i - 1, cb) // TODO: check the index instead for fast lookup
+    if (!node.value) return get(metadata, btm, i - 1, cb) // TODO: check the index instead for fast lookup
     cb(null, i, node)
   })
 }

@@ -9,28 +9,35 @@ module.exports = function (dir) {
 
   return {
     metadata: function (name) {
-      if (typeof dir === 'function') return dir('.dat/metadata/' + name)
-      return raf(path.join(dir, '.dat/metadata', name))
+      if (typeof dir === 'function') return dir('.dat/metadata.' + name)
+      return raf(path.join(dir, '.dat/metadata.' + name))
     },
     content: function (name, archive) {
       if (name === 'data') return createStorage(archive, dir)
-      if (typeof dir === 'function') return dir('.dat/content/' + name)
-      return raf(path.join(dir, '.dat/content', name))
+      if (typeof dir === 'function') return dir('.dat/content.' + name)
+      return raf(path.join(dir, '.dat/content.' + name))
     }
   }
 }
 
 function createStorage (archive, dir) {
+  if (!archive.latest) throw new Error('Currently only "latest" mode is support.')
+
   var latest = archive.latest
   var head = null
   var storage = multi({limit: 64}, locate)
 
   // TODO: this should be split into two events, 'appending' and 'append'
+  archive.on('appending', onappending)
   archive.on('append', onappend)
 
   return storage
 
   function onappend (name, opts) {
+    if (head) head.end = archive.content.byteLength
+  }
+
+  function onappending (name, opts) {
     if (head) head.end = archive.content.byteLength
 
     var v = latest ? '' : '.' + archive.metadata.length

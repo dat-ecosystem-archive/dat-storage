@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "append-tree": "^2.0.5",
-    "hyperdrive": "^8.1.0",
+    "dat-secret-storage": "^4.0.0",
+    "hyperdrive": "^9.1.1",
     "multi-random-access": "^2.0.3",
     "random-access-file": "^1.5.0"
   },

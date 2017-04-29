@@ -1,18 +1,19 @@
 var raf = require('random-access-file')
+var secretStorage = require('dat-secret-storage')
 var multi = require('multi-random-access')
 var messages = require('append-tree/messages')
 var stat = require('hyperdrive/lib/messages').Stat
 var path = require('path')
 
 module.exports = function (dir) {
-  var meta = '.dat'
-
   return {
-    metadata: function (name) {
+    metadata: function (name, opts) {
       if (typeof dir === 'function') return dir('.dat/metadata.' + name)
+      if (name === 'secret_key') return secretStorage()(path.join(dir, '.dat/metadata.ogd'), {key: opts.key, discoveryKey: opts.discoveryKey})
       return raf(path.join(dir, '.dat/metadata.' + name))
     },
-    content: function (name, archive) {
+    content: function (name, opts, archive) {
+      if (!archive) archive = opts
       if (name === 'data') return createStorage(archive, dir)
       if (typeof dir === 'function') return dir('.dat/content.' + name)
       return raf(path.join(dir, '.dat/content.' + name))
@@ -21,11 +22,11 @@ module.exports = function (dir) {
 }
 
 function createStorage (archive, dir) {
-  if (!archive.latest) throw new Error('Currently only "latest" mode is support.')
+  if (!archive.latest) throw new Error('Currently only "latest" mode is supported.')
 
   var latest = archive.latest
   var head = null
-  var storage = multi({limit: 64}, locate)
+  var storage = multi({limit: 128}, locate)
 
   // TODO: this should be split into two events, 'appending' and 'append'
   archive.on('appending', onappending)

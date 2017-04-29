@@ -10,15 +10,20 @@
     "multi-random-access": "^2.0.3",
     "random-access-file": "^1.5.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "standard": "^10.0.2"
+  },
+  "scripts": {
+    "test": "standard"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mafintosh/dat-storage.git"
+    "url": "https://github.com/datproject/dat-storage.git"
   },
   "author": "Mathias Buus (@mafintosh)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mafintosh/dat-storage/issues"
+    "url": "https://github.com/datproject/dat-storage/issues"
   },
-  "homepage": "https://github.com/mafintosh/dat-storage"
+  "homepage": "https://github.com/datproject/dat-storage"
 }

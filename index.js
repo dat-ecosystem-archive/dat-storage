@@ -98,24 +98,27 @@ function find (metadata, bytes, cb) {
 
   get(metadata, btm, mid, function loop (err, actual, node) {
     if (err) return cb(err)
-    if (!node) return cb(null, null, null, -1)
-
-    var st = stat.decode(node.value)
-
-    var start = st.byteOffset
-    var end = st.byteOffset + st.size
-
-    if (start <= bytes && bytes < end) return cb(null, node, st, actual)
-    if (top <= btm) return cb(null, null, null, -1)
 
     var oldMid = mid
 
-    if (bytes < start) {
-      top = mid
-      mid = Math.floor((top + btm) / 2)
-    } else {
+    if (!node) {
       btm = mid
       mid = Math.floor((top + btm) / 2)
+    } else {
+      var st = stat.decode(node.value)
+      var start = st.byteOffset
+      var end = st.byteOffset + st.size
+
+      if (start <= bytes && bytes < end) return cb(null, node, st, actual)
+      if (top <= btm) return cb(null, null, null, -1)
+
+      if (bytes < start) {
+        top = mid
+        mid = Math.floor((top + btm) / 2)
+      } else {
+        btm = mid
+        mid = Math.floor((top + btm) / 2)
+      }
     }
 
     if (mid === oldMid) {

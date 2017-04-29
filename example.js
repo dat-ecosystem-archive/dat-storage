@@ -1,7 +1,7 @@
 var hyperdrive = require('hyperdrive')
 var storage = require('./')
 
-var archive = hyperdrive(storage('sandbox/my-dataset'))
+var archive = hyperdrive(storage('sandbox/my-dataset'), {latest: true})
 
 archive.writeFile('/foo', 'this is foo')
 archive.writeFile('/bar', 'this is bar')

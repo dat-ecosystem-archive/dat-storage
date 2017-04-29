@@ -1,6 +1,6 @@
 {
   "name": "dat-storage",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Dat specific storage provider for Hyperdrive",
   "main": "index.js",
   "dependencies": {

@@ -2,8 +2,6 @@
 
 Dat specific storage provider for [Hyperdrive](https://github.com/mafintosh/dat-storage)
 
-# WIP - not fully stable yet
-
 ```
 npm install dat-storage
 ```

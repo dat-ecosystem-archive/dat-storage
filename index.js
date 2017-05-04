@@ -87,8 +87,14 @@ function get (metadata, btm, seq, cb) {
 
   metadata.get(i, {valueEncoding: messages.Node}, function (err, node) {
     if (err) return cb(err)
-    if (!node.value) return get(metadata, btm, i - 1, cb) // TODO: check the index instead for fast lookup
-    cb(null, i, node)
+
+    var st = node.value && stat.decode(node.value)
+
+    if (!node.value || (!st.offset && !st.blocks)) {
+      return get(metadata, btm, i - 1, cb) // TODO: check the index instead for fast lookup
+    }
+
+    cb(null, i, node, st)
   })
 }
 
@@ -97,7 +103,7 @@ function find (metadata, bytes, cb) {
   var btm = 1
   var mid = Math.floor((top + btm) / 2)
 
-  get(metadata, btm, mid, function loop (err, actual, node) {
+  get(metadata, btm, mid, function loop (err, actual, node, st) {
     if (err) return cb(err)
 
     var oldMid = mid
@@ -106,7 +112,6 @@ function find (metadata, bytes, cb) {
       btm = mid
       mid = Math.floor((top + btm) / 2)
     } else {
-      var st = stat.decode(node.value)
       var start = st.byteOffset
       var end = st.byteOffset + st.size
 

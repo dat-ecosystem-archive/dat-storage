@@ -90,7 +90,7 @@ function get (metadata, btm, seq, cb) {
 
     var st = node.value && stat.decode(node.value)
 
-    if (!node.value || (!st.offset && !st.blocks)) {
+    if (!node.value || (!st.offset && !st.blocks) || (!st.byteOffset && !st.blocks)) {
       return get(metadata, btm, i - 1, cb) // TODO: check the index instead for fast lookup
     }
 

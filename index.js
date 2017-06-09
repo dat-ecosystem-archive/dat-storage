@@ -73,7 +73,7 @@ function createStorage (archive, dir) {
 
   function file (name) {
     if (typeof dir === 'function') return dir(name)
-    return raf(path.join(dir, name))
+    return raf(name, {directory: dir, rmdir: true})
   }
 }
 

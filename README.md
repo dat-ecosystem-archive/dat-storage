@@ -1,6 +1,6 @@
 # dat-storage
 
-Dat specific storage provider for [Hyperdrive](https://github.com/mafintosh/dat-storage)
+Dat specific storage provider for [Hyperdrive](https://github.com/mafintosh/hyperdrive)
 
 ```
 npm install dat-storage

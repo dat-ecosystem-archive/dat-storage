@@ -8,7 +8,7 @@
     "dat-secret-storage": "^4.0.0",
     "hyperdrive": "^9.1.1",
     "multi-random-access": "^2.0.3",
-    "random-access-file": "^1.8.1"
+    "random-access-file": "^2.0.1"
   },
   "devDependencies": {
     "standard": "^10.0.2"

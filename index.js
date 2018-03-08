@@ -5,11 +5,13 @@ var messages = require('append-tree/messages')
 var stat = require('hyperdrive/lib/messages').Stat
 var path = require('path')
 
-module.exports = function (dir) {
+module.exports = function (dir, opts) {
+  if (!opts) opts = {}
+
   return {
     metadata: function (name, opts) {
       if (typeof dir === 'function') return dir('.dat/metadata.' + name)
-      if (name === 'secret_key') return secretStorage()(path.join(dir, '.dat/metadata.ogd'), {key: opts.key, discoveryKey: opts.discoveryKey})
+      if (name === 'secret_key') return secretStorage(opts.secretDir)(path.join(dir, '.dat/metadata.ogd'), {key: opts.key, discoveryKey: opts.discoveryKey})
       return raf(path.join(dir, '.dat/metadata.' + name))
     },
     content: function (name, opts, archive) {

@@ -6,10 +6,16 @@ var stat = require('hyperdrive/lib/messages').Stat
 var path = require('path')
 
 module.exports = function (dir) {
+  let secret_dir = undefined;
+  if (typeof dir === 'object') {
+    secret_dir = dir.secret_dir;
+    dir = dir.dir;
+  }
+
   return {
     metadata: function (name, opts) {
       if (typeof dir === 'function') return dir('.dat/metadata.' + name)
-      if (name === 'secret_key') return secretStorage()(path.join(dir, '.dat/metadata.ogd'), {key: opts.key, discoveryKey: opts.discoveryKey})
+      if (name === 'secret_key') return secretStorage(secret_dir)(path.join(dir, '.dat/metadata.ogd'), {key: opts.key, discoveryKey: opts.discoveryKey})
       return raf(path.join(dir, '.dat/metadata.' + name))
     },
     content: function (name, opts, archive) {

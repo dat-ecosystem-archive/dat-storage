@@ -7,18 +7,18 @@ var path = require('path')
 
 module.exports = function (dir, opts) {
   if (!opts) opts = {}
-
+  var prefix = opts.prefix || '.dat/'
   return {
     metadata: function (name, opts) {
-      if (typeof dir === 'function') return dir('.dat/metadata.' + name)
-      if (name === 'secret_key') return secretStorage(opts.secretDir)(path.join(dir, '.dat/metadata.ogd'), {key: opts.key, discoveryKey: opts.discoveryKey})
-      return raf(path.join(dir, '.dat/metadata.' + name))
+      if (typeof dir === 'function') return dir(prefix + 'metadata.' + name)
+      if (name === 'secret_key') return secretStorage(opts.secretDir)(path.join(dir, prefix + 'metadata.ogd'), {key: opts.key, discoveryKey: opts.discoveryKey})
+      return raf(path.join(dir, prefix + 'metadata.' + name))
     },
     content: function (name, opts, archive) {
       if (!archive) archive = opts
       if (name === 'data') return createStorage(archive, dir)
-      if (typeof dir === 'function') return dir('.dat/content.' + name)
-      return raf(path.join(dir, '.dat/content.' + name))
+      if (typeof dir === 'function') return dir(prefix + 'content.' + name)
+      return raf(path.join(dir, prefix + 'content.' + name))
     }
   }
 }

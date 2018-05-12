@@ -49,7 +49,7 @@ module.exports = function keychainStorage() {
 By default secret keys are stored in the users home directory via [dat-secret-storage](https://github.com/joehand/dat-secret-storage). To change the directory, pass it as an option:
 
 ```js
-var storaage = require('dat-storage')
+var storage = require('dat-storage')
 
 var archive = hyperdrive(storage('my-dataset', {secretDir: '/secret_keys'})
 ```

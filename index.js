@@ -9,13 +9,13 @@ module.exports = function (dir, opts) {
   if (!opts) opts = {}
   var prefix = opts.prefix || '.dat/'
   return {
-    metadata: function (name, opts) {
+    metadata: function (name, metaOpts) {
       if (typeof dir === 'function') return dir(prefix + 'metadata.' + name)
-      if (name === 'secret_key') return secretStorage(opts.secretDir)(path.join(dir, prefix + 'metadata.ogd'), {key: opts.key, discoveryKey: opts.discoveryKey})
+      if (name === 'secret_key') return secretStorage(opts.secretDir)(path.join(dir, prefix + 'metadata.ogd'), {key: metaOpts.key, discoveryKey: metaOpts.discoveryKey})
       return raf(path.join(dir, prefix + 'metadata.' + name))
     },
-    content: function (name, opts, archive) {
-      if (!archive) archive = opts
+    content: function (name, contentOpts, archive) {
+      if (!archive) archive = contentOpts
       if (name === 'data') return createStorage(archive, dir)
       if (typeof dir === 'function') return dir(prefix + 'content.' + name)
       return raf(path.join(dir, prefix + 'content.' + name))
